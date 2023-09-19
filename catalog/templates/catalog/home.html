@@ -8,86 +8,33 @@
 
     <div class="container">
         <div class="row text-center">
+            {% for product in products %}
             <div class="col-4">
                 <div class="card mb-4 box-shadow">
                     <div class="card-header">
-                        <h4 class="my-0 font-weight-normal">Basic</h4>
+                        <img src="{{product.image.url}}" style="max-width: 75%" alt="">
                     </div>
                     <div class="card-body">
-                        <h1 class="card-title pricing-card-title">$ 30</h1>
+                        <h1 class="card-title pricing-card-title">$ {{product.price}}</h1>
                         <ul class="list-unstyled mt-3 mb-4 text-start m-3">
-                            <li>- Неограниченная лицензия</li>
-                            <li>- Поддержка</li>
-                            <li>- Установка на сервер</li>
-                            <li>- Получение обновлений</li>
-                        </ul>
-                        <div class="row">
-                            <button type="button" class="btn btn-lg btn-block btn-outline-success w-50">Купить</button>
-                            <button type="button" class="btn btn-lg btn-block btn-outline-danger w-50"
-                                    data-bs-toggle="collapse" data-bs-target="#collapseExample1" aria-expanded="false"
-                                    aria-controls="collapseExample">Ознакомиться
-                            </button>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="col-4">
-                <div class="card mb-4 box-shadow">
-                    <div class="card-header">
-                        <h4 class="my-0 font-weight-normal">Premium</h4>
-                    </div>
-                    <div class="card-body">
-                        <h1 class="card-title pricing-card-title">$ 140</h1>
-                        <ul class="list-unstyled mt-3 mb-4 text-start m-3">
-                            <li>- Неограниченная лицензия</li>
-                            <li>- Поддержка</li>
-                            <li>- Установка на сервер</li>
-                            <li>- Получение обновлений</li>
-                        </ul>
-                        <div class="row">
-                            <button type="button" class="btn btn-lg btn-block btn-outline-success w-50">Купить</button>
-                            <button type="button" class="btn btn-lg btn-block btn-outline-danger w-50"
-                                    data-bs-toggle="collapse" data-bs-target="#collapseExample2" aria-expanded="false"
-                                    aria-controls="collapseExample">Ознакомиться
-                            </button>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="col-4">
-                <div class="card mb-4 box-shadow">
-                    <div class="card-header">
-                        <h4 class="my-0 font-weight-normal">Elite</h4>
-                    </div>
-                    <div class="card-body">
-                        <h1 class="card-title pricing-card-title">$ 240</h1>
-                        <ul class="list-unstyled mt-3 mb-4 text-start m-3">
-                            <li>- Неограниченная лицензия</li>
-                            <li>- Поддержка</li>
-                            <li>- Установка на сервер</li>
-                            <li>- Получение обновлений</li>
-                        </ul>
-                        <div class="row">
-                            <button type="button" class="btn btn-lg btn-block btn-outline-success w-50">Купить</button>
-                            <button type="button" class="btn btn-lg btn-block btn-outline-danger w-50"
-                                    data-bs-toggle="collapse" data-bs-target="#collapseExample3" aria-expanded="false"
-                                    aria-controls="collapseExample">Ознакомиться
-                            </button>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            {% for num in "123" %}
-                <div class="collapse" id="collapseExample{{ num }}">
-                    <div class="card card-body">
-                        {% if num == "1" %}
-                            Тут находится информация об обычной подписке.
-                        {% elif num == "2" %}
-                            Тут находится информация о премиум подписке.
-                        {% elif num == "3" %}
-                            Тут находится информация об элитной подписке.
-                        {% endif %}
+                            {% for preview in product.get_preview_description %}
+                            <li>{{preview}}</li>
+                            {% endfor %}
 
+                        </ul>
+                        <div class="row">
+                            <button type="button" class="btn btn-lg btn-block btn-outline-success w-50">Купить</button>
+                            <button type="button" class="btn btn-lg btn-block btn-outline-danger w-50"
+                                    data-bs-toggle="collapse" data-bs-target="#{{product.name}}" aria-expanded="false"
+                                    aria-controls="collapseExample">Ознакомиться
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+                <div class="collapse" id="collapseExample{{ product }}">
+                    <div class="card card-body">
+                    {{product.description}}
                     </div>
                 </div>
             {% endfor %}
