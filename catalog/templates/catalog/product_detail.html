@@ -1,5 +1,4 @@
 {% extends 'catalog/base.html' %}
-{% load my_tags %}
 {% block content %}
 <div class="pricing-header px-3 py-3 pt-md-5 pb-md-4 mx-auto text-center">
     <img src="/static/img/catalog/logo.jpg" alt="">
@@ -9,13 +8,10 @@
 
 <div class="container">
     <div class="row text-center">
-        {% for product in products %}
-        <div class="col-4">
+        <div class="col-8">
             <div class="card mb-4 box-shadow">
                 <div class="card-header">
-                    <a href="/product/{{product.pk}}">
-                    <img src="{% mediafile product.image %}" style="max-width: 75%" alt="">
-                        </a>
+                    <img src="{{product.image.url}}" style="max-width: 75%" alt="">
                 </div>
                 <div class="card-body">
                     <h1 class="card-title pricing-card-title">$ {{product.price}}</h1>
@@ -35,14 +31,13 @@
                 </div>
                 <div class="collapse" id="{{ product.name }}">
                 <div class="card card-body">
-                    {{product.description|truncatechars:100}}
+                    {{product.description}}
                 </div>
             </div>
             </div>
 
         </div>
 
-        {% endfor %}
 
 
     </div>
