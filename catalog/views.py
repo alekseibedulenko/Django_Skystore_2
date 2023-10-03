@@ -1,31 +1,22 @@
-from django.shortcuts import render
+from django.views.generic import ListView, DetailView
 
 from catalog.models import Product, Contact
 
 
-def home(request):
-    context = {
-        'title': 'SkyStore',
-        'products': Product.objects.all()[:6]
-    }
-    return render(request, 'catalog/home.html', context=context)
+class ProductListView(ListView):
+    model = Product
+    template_name = 'catalog/home.html'
+    context_object_name = 'products'
+    queryset = Product.objects.all()[:6]
 
 
-def contacts(request):
-    context = {
-        'title': 'Contact',
-        'address_info': Contact.objects.first()
-    }
-    if request.method == 'POST':
-        visiter = {}
-        visiter["name"] = request.POST.get('name', None)
-        visiter["phone"] = request.POST.get('phone', None)
-        visiter["message"] = request.POST.get('message', None)
-        print(visiter)
-    return render(request, 'catalog/contacts.html', context=context)
+class ProductDetailView(DetailView):
+    model = Product
+    context_object_name = 'product'
 
 
-def detail_product(request, pk):
-    product = Product.objects.get(pk=pk)
-    context = {"product": product}
-    return render(request, 'catalog/product_detail.html', context=context)
+class ContactsListView(ListView):
+    model = Contact
+    template_name = 'catalog/contacts.html'
+    context_object_name = 'address_info'
+    queryset = Contact.objects.first()
