@@ -38,6 +38,13 @@ class Contact(models.Model):
         return f"{self.country} {self.address}"
 
 
+class Version(models.Model):
+    products = models.ManyToManyField(Product, related_name='versions', blank=True)
+    number = models.CharField(max_length=50)
+    name = models.CharField(max_length=200)
+    is_active = models.BooleanField(default=False)
 
+    def __str__(self):
+        return f"{self.name}"
 
 
