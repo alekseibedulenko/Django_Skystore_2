@@ -1,3 +1,5 @@
+from django.contrib.auth.mixins import LoginRequiredMixin
+from django.http import Http404
 from django.shortcuts import get_object_or_404
 from django.urls import reverse_lazy
 from django.views.generic import ListView, DetailView
@@ -20,13 +22,14 @@ class ProductListView(ListView):
         return context
 
 
-class ProductCreateView(CreateView):
+class ProductCreateView(LoginRequiredMixin, CreateView):
     model = Product
     form_class = ProductForm
     success_url = '/'
 
     def form_valid(self, form):
         new_product = form.save()
+        new_product.owner = self.request.user
         new_product.save()
         selected_version = form.cleaned_data['version']
         selected_version.products.add(new_product)
@@ -49,7 +52,7 @@ class ProductDetailView(DetailView):
         return context
 
 
-class ProductUpdateView(UpdateView):
+class ProductUpdateView(LoginRequiredMixin, UpdateView):
     model = Product
     form_class = ProductForm
     context_object_name = 'product'
@@ -57,7 +60,11 @@ class ProductUpdateView(UpdateView):
 
     def get_object(self, queryset=None):
         name = self.kwargs.get('name')
-        return get_object_or_404(Product, name=name)
+        product = get_object_or_404(Product, name=name)
+        if product.owner != self.request.user:
+            raise Http404
+
+        return product
 
     def form_valid(self, form):
         new_product = form.save()
@@ -69,14 +76,18 @@ class ProductUpdateView(UpdateView):
         return super().form_valid(form)
 
 
-class ProductDeleteView(DeleteView):
+class ProductDeleteView(LoginRequiredMixin, DeleteView):
     model = Product
     context_object_name = 'product'
     success_url = reverse_lazy("catalog:product_list")
 
     def get_object(self, queryset=None):
         name = self.kwargs.get('name')
-        return get_object_or_404(Product, name=name)
+        product = get_object_or_404(Product, name=name)
+        if product.owner != self.request.user:
+            raise Http404
+
+        return product
 
 
 class ContactDetailView(ListView):

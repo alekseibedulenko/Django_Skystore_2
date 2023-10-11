@@ -25,7 +25,7 @@ class ContactAdmin(admin.ModelAdmin):
 class VersionAdmin(admin.ModelAdmin):
     list_display = ("pk", "name", "number", "get_products_names")
 
-    def get_product_names(self, obj):
+    def get_products_names(self, obj):
         return '; '.join([product.name for product in obj.products.all()])
 
 
