@@ -6,6 +6,7 @@ from django.views.generic import ListView, DetailView
 from django.views.generic.edit import CreateView, UpdateView, DeleteView
 from .models import Product, Contact
 from .forms import ProductForm
+from .services import get_categories
 
 
 class ProductListView(ListView):
@@ -16,9 +17,11 @@ class ProductListView(ListView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         products = Product.objects.all()[:6]
+        categories = get_categories()
         for product in products:
             product.active_version = product.versions.filter(is_active=True).first()
         context['products'] = products
+        context['categories'] = categories
         return context
 
 
